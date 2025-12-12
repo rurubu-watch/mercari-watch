@@ -55,7 +55,23 @@ async function sendTelegram(text) {
 
   for (const t of TARGETS) {
     console.log(`チェック開始: ${t.name}`);
-    await page.goto(t.url, { waitUntil: 'networkidle' });
+    // （例）ここで page を作った直後に入れるのが理想
+page.setDefaultNavigationTimeout(90000);
+page.setDefaultTimeout(90000);
+
+// 重いリソースを止めて高速化（任意だが効果大）
+await page.route('**/*', (route) => {
+  const type = route.request().resourceType();
+  if (['image', 'media', 'font'].includes(type)) return route.abort();
+  return route.continue();
+});
+
+// ここを修正：networkidle → domcontentloaded
+await page.goto(url, { waitUntil: 'domcontentloaded', timeout: 90000 });
+
+// アイテムが出るまで待つ（メルカリは遅延描画がある）
+await page.waitForSelector('a[href^="/item/"]', { timeout: 90000 });
+
 
     // 商品リンクを上から取得
     const itemUrls = await page.$$eval(
