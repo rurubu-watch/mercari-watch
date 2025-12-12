@@ -2,13 +2,12 @@ name: Mercari Watch
 
 on:
   schedule:
-    - cron: '*/1 * * * *'   # every 1 minute
+    - cron: '*/1 * * * *'
   workflow_dispatch:
 
 jobs:
   watch:
     runs-on: ubuntu-latest
-
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
