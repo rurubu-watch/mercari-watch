@@ -1,0 +1,10 @@
+{
+  "name": "mercari-watch",
+  "private": true,
+  "scripts": {
+    "start": "node scraper.js"
+  },
+  "dependencies": {
+    "playwright": "^1.44.0"
+  }
+}
