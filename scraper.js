@@ -7,8 +7,13 @@ const fetch = (...args) =>
   import('node-fetch').then(({ default: fetch }) => fetch(...args));
 
 // ====== 設定 ======
-const token = '8321160557:AAHasR3vPsdp0YDZboOhnrxr8gaqqXSyYto';
-const chatId = '7620478424';
+const TELEGRAM_BOT_TOKEN = process.env.TELEGRAM_BOT_TOKEN;
+const TELEGRAM_CHAT_ID  = process.env.TELEGRAM_CHAT_ID;
+
+if (!TELEGRAM_BOT_TOKEN || !TELEGRAM_CHAT_ID) {
+  throw new Error('Missing TELEGRAM_BOT_TOKEN or TELEGRAM_CHAT_ID (GitHub Secrets)');
+}
+
 
 // 監視対象（ここを増やせます）
 const TARGETS = [
