@@ -2,7 +2,7 @@ name: Mercari Watch
 
 on:
   schedule:
-    - cron: "*/5 * * * *"   # 最短は5分おき
+    - cron: "*/5 * * * *"
   workflow_dispatch:
 
 jobs:
@@ -21,6 +21,10 @@ jobs:
 
       - name: Install dependencies
         run: npm ci
+
+      # 追加：Playwrightのブラウザ（Chromium等）をダウンロード
+      - name: Install Playwright browsers
+        run: npx playwright install --with-deps chromium
 
       - name: Run scraper
         env:
