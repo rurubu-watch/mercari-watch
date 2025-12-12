@@ -1,9 +1,9 @@
 name: Mercari Watch
 
 on:
-  workflow_dispatch: {}
+  workflow_dispatch:
   schedule:
-   - cron: "* * * * *"（後で10分/15分に変更可）
+    - cron: "* * * * *"
 
 jobs:
   run:
@@ -20,13 +20,10 @@ jobs:
           node-version: "20"
 
       - name: Install dependencies
-        run: npm install
+        run: npm ci
 
       - name: Install Playwright browsers
-        run: npx playwright install --with-deps chromium
+        run: npx playwright install --with-deps
 
       - name: Run scraper
-        env:
-          TELEGRAM_BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
-          TELEGRAM_CHAT_ID: ${{ secrets.TELEGRAM_CHAT_ID }}
         run: node scraper.js
