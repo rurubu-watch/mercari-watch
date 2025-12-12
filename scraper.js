@@ -52,7 +52,15 @@ async function sendTelegram(text) {
     userAgent:
       'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 Chrome/120 Safari/537.36'
   });
-
+// 重いリソースをブロックして高速化・タイムアウト防止
+await page.route('**/*', (route) => {
+  const type = route.request().resourceType();
+  if (['image', 'font', 'media'].includes(type)) {
+    return route.abort();
+  }
+  return route.continue();
+});
+  
   for (const t of TARGETS) {
     console.log(`チェック開始: ${t.name}`);
     // （例）ここで page を作った直後に入れるのが理想
